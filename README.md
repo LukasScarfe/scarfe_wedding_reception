@@ -4,6 +4,9 @@ A garden/botanical e-vite email. Sage, blush and cream, script headline, mounted
 
 ```
 save-the-date.html          the email
+index.html                  the website (skeleton)
+assets/css/site.css         site styles + envelope reveal
+assets/js/site.js           envelope open behaviour
 tools/make-botanicals.js    regenerates the leaf artwork
 
 assets/photo-email.jpg      880×1323, 135 KB — retina, displays at 420px
@@ -46,27 +49,71 @@ Still open — search `✏️ EDIT` in `save-the-date.html`:
 
 **Email clients will not display a local file, and Gmail strips base64-embedded images.** All four images — the photo, both leaf bands, and the background tile — must live at public `https://` URLs before you send.
 
-Since you're building the site later anyway, GitHub Pages is the natural home:
+GitHub Pages is already enabled on this repo with the custom domain
+**`michelleyap.lukasscarfe.com`** (see the `CNAME` file — don't delete it).
+
+### DNS — one record, still outstanding
+
+`lukasscarfe.com` is on Cloudflare, and its apex already points at GitHub Pages.
+The subdomain has no record yet. In Cloudflare → `lukasscarfe.com` → DNS → Records:
+
+| Field | Value |
+|---|---|
+| Type | `CNAME` |
+| Name | `michelleyap` |
+| Target | `lukasscarfe.github.io` |
+| Proxy status | **DNS only** (grey cloud) |
+| TTL | Auto |
+
+A `CNAME` because this is a subdomain — the `185.199.108–111.153` A records are
+only for an apex. The target is the *user* domain, never the repo name; the repo
+is selected by the `CNAME` file.
+
+**Keep the cloud grey.** GitHub issues its certificate over an HTTP challenge,
+and Cloudflare's proxy intercepts it, leaving you stuck on "Certificate not yet
+created". If you later want it proxied, first set SSL/TLS → Overview →
+**Full (strict)** — the default Flexible mode plus Pages' "Enforce HTTPS" is an
+infinite redirect loop.
+
+Once it resolves, wait for the cert, then tick **Enforce HTTPS** in Pages settings.
+
+### Then rewrite the email's image paths
+
+With a custom domain the site is served from the **domain root**, so asset URLs
+are `https://michelleyap.lukasscarfe.com/assets/…` — *not* under
+`/scarfe_wedding_reception/`.
 
 ```bash
-git init
-git add . && git commit -m "Save the date"
-gh repo create scarfe_wedding_reception --public --source=. --push
+sed -i "s#\([\"']\)assets/#\1https://michelleyap.lukasscarfe.com/assets/#g" save-the-date.html
 ```
 
-Then in the repo: **Settings → Pages → Source: `main` / root**. After a minute your assets are live at `https://lukasscarfe.github.io/scarfe_wedding_reception/assets/…`, and this one-liner rewrites every reference in the email:
+That rewrites all five references — three `src=` attributes plus the `background`
+attribute and `background-image` URL for the tile. Reload the file in a browser
+afterwards to confirm everything still renders, and check the URLs return 200
+before sending to anyone.
 
-```bash
-sed -i "s#\([\"']\)assets/#\1https://lukasscarfe.github.io/scarfe_wedding_reception/assets/#g" save-the-date.html
-```
+> **Privacy note.** The repo is public, so every file in it — including the
+> full-resolution original JPG — is reachable by anyone with the URL. Nothing is
+> indexed or listed, but nothing is private either. Keep guest lists, addresses
+> and RSVP data out of this repo; `git rm` won't help after the fact, since it
+> stays in history. Use a separate private repo for anything with other people's
+> details in it.
 
-That rewrites all five references — three `src=` attributes plus the `background` attribute and `background-image` URL for the tile. Reload the file in a browser afterwards to confirm everything still renders.
+## 2b. The website
 
-> **Two privacy notes on the public-repo route.**
->
-> The photo becomes reachable by anyone with the URL. It won't be indexed or listed, but it isn't private. If that matters, host it somewhere access-controlled instead.
->
-> The `.nojekyll` file in this repo stops GitHub Pages from publishing *this README* as your homepage — which it does by default when there's no `index.html`. Don't delete it until you have a real `index.html` to replace it.
+`index.html` is a skeleton at the domain root, sharing the palette, type and
+botanical artwork with the email. Sections: hero, schedule, travel, stay, FAQ,
+RSVP. Search `TODO` for everything still to be filled in.
+
+The envelope reveal is progressive enhancement — `assets/js/site.js` adds
+`.js-envelope` to `<html>`, and only then does the overlay appear. If the script
+fails, guests get the full invitation rather than a blank page. It's skipped for
+`prefers-reduced-motion`, remembered per session, and the overlay is removed from
+the DOM after opening so it can't trap keyboard focus.
+
+Now that `index.html` exists, Pages serves the site rather than rendering
+`README.md`. `.nojekyll` is still worth keeping — it skips Jekyll processing,
+which is faster and avoids surprises with underscore-prefixed paths.
 
 ## 3. Send it
 
