@@ -135,8 +135,8 @@ img { max-width: 100%; height: auto; display: block; }
   font-style: italic; font-size: 14px; color: #A0998C; margin-top: 9px;
 }
 
-.date { font-size: 38px; line-height: 1.2; letter-spacing: 1.5px; margin: 10px 0 0; }
-@media (max-width: 560px) { .date { font-size: 31px; } }
+.date { font-size: 32px; line-height: 1.25; letter-spacing: 1.2px; margin: 10px 0 0; }
+@media (max-width: 560px) { .date { font-size: 24px; } }
 
 .date-sub {
   font-size: 15px; letter-spacing: 2.6px; text-transform: uppercase;
