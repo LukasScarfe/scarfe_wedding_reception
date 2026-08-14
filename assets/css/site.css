@@ -199,6 +199,45 @@ summary::after { content: '+'; float: right; color: var(--sage); font-size: 19px
 details[open] summary::after { content: '\2013'; }
 details p { margin: 0 0 16px; font-size: 16px; }
 
+/* ─────────────── rsvp ─────────────── */
+
+.rsvp-form { margin: 30px 30px 0; }
+
+.field { margin-bottom: 20px; }
+.field label,
+.rsvp-dietary-label {
+  display: block; font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--sage); margin-bottom: 6px;
+}
+
+.rsvp-form input[type="text"],
+.rsvp-form textarea {
+  width: 100%; padding: 11px 13px; font: inherit; font-size: 17px;
+  color: var(--ink); background: #fff;
+  border: 1px solid var(--sage-line);
+}
+.rsvp-form input[type="text"]:focus,
+.rsvp-form textarea:focus { border-color: var(--sage-deep); }
+.rsvp-form textarea { resize: vertical; }
+
+.rsvp-guest {
+  border: 0; border-top: 1px solid var(--sage-hair); padding: 18px 0 0; margin: 0 0 20px;
+}
+.rsvp-guest legend {
+  padding: 0 0 10px; font-size: 18px; color: var(--ink); font-style: italic;
+}
+.rsvp-choices { display: flex; gap: 26px; flex-wrap: wrap; margin-bottom: 14px; }
+.rsvp-choice { display: flex; align-items: center; gap: 8px; font-size: 16px; color: var(--ink-soft); cursor: pointer; }
+.rsvp-choice input { accent-color: var(--sage-deep); width: 16px; height: 16px; }
+
+.rsvp-status {
+  min-height: 1.4em; text-align: center; font-size: 15px;
+  color: var(--sage-deep); margin: 18px 0 0;
+}
+.rsvp-status--error { color: #A9564A; }
+
+.cf-turnstile { display: flex; justify-content: center; margin-top: 18px; }
+
 /* ─────────────── footer ─────────────── */
 
 .footer { text-align: center; padding: 12px 0 0; }

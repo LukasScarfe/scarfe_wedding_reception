@@ -1,0 +1,25 @@
+name = "scarfe-rsvp-api"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# ── Non-secret config ──────────────────────────────────────────────
+# Where the guest list and RSVPs live. This repo is PRIVATE — the
+# worker is the only thing with a token that can read/write it.
+[vars]
+GITHUB_OWNER    = "LukasScarfe"
+GITHUB_REPO     = "scarfe_wedding_rsvps"
+GITHUB_BRANCH   = "main"
+ALLOWED_ORIGIN  = "https://michelleyap.lukasscarfe.com"
+
+# Serve the API at rsvp-api.michelleyap.lukasscarfe.com instead of a
+# workers.dev URL. Requires adding this as a Custom Domain on the
+# worker (Cloudflare dashboard → Workers → this worker → Settings →
+# Domains & Routes) — see worker/DEPLOY.md.
+[[routes]]
+pattern     = "rsvp-api.michelleyap.lukasscarfe.com/*"
+custom_domain = true
+
+# Secrets — set with `wrangler secret put <NAME>`, never written here:
+#   GITHUB_TOKEN     fine-grained PAT, Contents: Read & write, scoped
+#                     ONLY to the scarfe_wedding_rsvps repo
+#   TURNSTILE_SECRET optional — enables bot protection on the form

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RSVP · Lukas &amp; Michelle</title>
+<meta name="description" content="RSVP for the wedding reception of Lukas Scarfe and Michelle Yap." />
+<meta name="robots" content="noindex" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Pinyon+Script&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/site.css" />
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<main id="main" class="page" tabindex="-1">
+
+  <header class="hero card" style="padding-bottom: 30px;">
+    <p class="script hero__script" style="font-size: 40px;">RSVP</p>
+    <p class="eyebrow">Lukas &amp; Michelle &middot; 21 May 2027</p>
+  </header>
+
+  <section class="card section" id="rsvp-app" aria-live="polite">
+
+    <!-- ─────────── STEP 1: find invitation ─────────── -->
+    <div class="rsvp-step" id="step-lookup">
+      <h2 class="section__title" style="margin-top: 4px;">Find Your Invitation</h2>
+      <div class="rule"><span>&#10047;</span></div>
+      <p class="lede" style="margin: 22px 30px 0;">Enter your name as it appears on your invitation.</p>
+
+      <form id="lookup-form" class="rsvp-form" novalidate>
+        <div class="field">
+          <label for="first-name">First name</label>
+          <input type="text" id="first-name" name="firstName" autocomplete="given-name" required maxlength="80" />
+        </div>
+        <div class="field">
+          <label for="last-name">Last name</label>
+          <input type="text" id="last-name" name="lastName" autocomplete="family-name" required maxlength="80" />
+        </div>
+
+        <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="light"></div>
+
+        <p class="rsvp-status" id="lookup-status" role="alert"></p>
+
+        <p class="center" style="margin-top: 26px;">
+          <button type="submit" class="btn" id="lookup-submit">Find My Invitation</button>
+        </p>
+      </form>
+    </div>
+
+    <!-- ─────────── STEP 2: reply form ─────────── -->
+    <div class="rsvp-step" id="step-reply" tabindex="-1" hidden>
+      <h2 class="section__title" style="margin-top: 4px;">You're Invited</h2>
+      <div class="rule"><span>&#10047;</span></div>
+      <p class="lede" id="reply-intro" style="margin: 22px 30px 0;"></p>
+
+      <form id="reply-form" class="rsvp-form">
+        <div id="reply-guests"></div>
+
+        <div class="field">
+          <label for="message">A note for the couple (optional)</label>
+          <textarea id="message" name="message" rows="3" maxlength="600"></textarea>
+        </div>
+
+        <p class="rsvp-status" id="reply-status" role="alert"></p>
+
+        <p class="center" style="margin-top: 26px;">
+          <button type="submit" class="btn" id="reply-submit">Send RSVP</button>
+        </p>
+      </form>
+    </div>
+
+    <!-- ─────────── STEP 3: done ─────────── -->
+    <div class="rsvp-step" id="step-done" hidden>
+      <h2 class="section__title" style="margin-top: 4px;">Thank You</h2>
+      <div class="rule"><span>&#10047;</span></div>
+      <p class="lede center" id="done-message" style="margin: 22px 30px 0;">Your RSVP has been received.</p>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <p class="script footer__script">Lukas &amp; Michelle</p>
+    <p class="muted">21 May 2027 &middot; Lakeshore, Ontario</p>
+  </footer>
+
+</main>
+
+<script src="assets/js/rsvp.js"></script>
+</body>
+</html>

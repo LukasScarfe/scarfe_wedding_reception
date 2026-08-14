@@ -5,8 +5,12 @@ A garden/botanical e-vite email. Sage, blush and cream, script headline, mounted
 ```
 save-the-date.html          the email
 index.html                  the website (skeleton)
-assets/css/site.css         site styles + envelope reveal
+rsvp.html                   the RSVP page
+assets/css/site.css         site styles + envelope reveal + RSVP form
 assets/js/site.js           envelope open behaviour
+assets/js/rsvp.js           RSVP lookup/reply flow
+worker/                     Cloudflare Worker API backing the RSVP page
+worker/DEPLOY.md            one-time setup for the RSVP system
 tools/make-botanicals.js    regenerates the leaf artwork
 
 assets/photo-email.jpg      880×1323, 135 KB — retina, displays at 420px
@@ -114,6 +118,23 @@ the DOM after opening so it can't trap keyboard focus.
 Now that `index.html` exists, Pages serves the site rather than rendering
 `README.md`. `.nojekyll` is still worth keeping — it skips Jekyll processing,
 which is faster and avoids surprises with underscore-prefixed paths.
+
+### RSVP
+
+`rsvp.html` + `assets/js/rsvp.js` is the guest-facing side of the RSVP
+system. Guests type their name, see their household, mark who's coming,
+and submit — once. There's no login and no per-guest code to distribute;
+matching is by name against a guest list you enter ahead of time.
+
+The actual data — the guest list and every response — lives in a
+**separate private GitHub repo**, never this one, so it's never publicly
+readable. A small Cloudflare Worker (`worker/`) is the only thing that
+can read or write it; the worker's own source code holds no guest data
+and is safe to keep here. See `worker/DEPLOY.md` for the one-time setup
+(create the private repo, scoped GitHub token, `wrangler deploy`).
+
+The RSVP link on `index.html` is commented out until formal invitations
+go out — see the `TODO` in the RSVP section.
 
 ## 3. Send it
 

@@ -12,3 +12,7 @@ Desktop.ini
 # Node (in case tooling grows)
 node_modules/
 npm-debug.log*
+
+# Cloudflare Worker local state / secrets — never commit a token
+worker/.wrangler/
+worker/.dev.vars

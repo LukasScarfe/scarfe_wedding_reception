@@ -1,0 +1,17 @@
+[
+  {
+    "id": "smith-family",
+    "match": [
+      { "first": "John", "last": "Smith" },
+      { "first": "Jane", "last": "Smith" }
+    ],
+    "guests": ["John Smith", "Jane Smith", "Tommy Smith"]
+  },
+  {
+    "id": "priya-patel",
+    "match": [
+      { "first": "Priya", "last": "Patel" }
+    ],
+    "guests": ["Priya Patel"]
+  }
+]
