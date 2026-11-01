@@ -4,11 +4,15 @@ A garden/botanical e-vite email. Sage, blush and cream, script headline, mounted
 
 ```
 save-the-date.html          the email
-index.html                  the website (skeleton)
+index.html                  the website's front page
+schedule.html               the order of events
+venue.html                  the venue and getting there
+hotel.html                  where to stay
+faq.html                    guest questions
 rsvp.html                   the RSVP page
-assets/css/site.css         site styles + envelope reveal + RSVP form
-assets/js/site.js           envelope open behaviour
+assets/css/site.css         the Gazette theme, shared by every page
 assets/js/rsvp.js           RSVP lookup/reply flow
+assets/halftone-wide.png    newspaper halftone of the couple, for the front page
 worker/                     Cloudflare Worker API backing the RSVP page
 worker/DEPLOY.md            one-time setup for the RSVP system
 tools/make-botanicals.js    regenerates the leaf artwork
@@ -105,15 +109,13 @@ before sending to anyone.
 
 ## 2b. The website
 
-`index.html` is a skeleton at the domain root, sharing the palette, type and
-botanical artwork with the email. Sections: hero, schedule, travel, stay, FAQ,
-RSVP. Search `TODO` for everything still to be filled in.
+The site is *The Scarfe–Yap Gazette*, a newspaper themed to match the invitation
+in `invite_tests/04-zoom1-wide.html`. Each page is a plain HTML file with the
+same masthead and navigation, so a new or renamed page has to be changed in the
+navigation of all six. The email keeps its own botanical design.
 
-The envelope reveal is progressive enhancement — `assets/js/site.js` adds
-`.js-envelope` to `<html>`, and only then does the overlay appear. If the script
-fails, guests get the full invitation rather than a blank page. It's skipped for
-`prefers-reduced-motion`, remembered per session, and the overlay is removed from
-the DOM after opening so it can't trap keyboard focus.
+Details not confirmed yet read "to follow" on the page. Search `TODO` for an HTML
+comment beside each one.
 
 Now that `index.html` exists, Pages serves the site rather than rendering
 `README.md`. `.nojekyll` is still worth keeping — it skips Jekyll processing,
@@ -133,8 +135,8 @@ can read or write it; the worker's own source code holds no guest data
 and is safe to keep here. See `worker/DEPLOY.md` for the one-time setup
 (create the private repo, scoped GitHub token, `wrangler deploy`).
 
-The RSVP link on `index.html` is commented out until formal invitations
-go out — see the `TODO` in the RSVP section.
+Every page links to the RSVP page, so `guests.json` needs the real guest
+list before the site is published.
 
 ## 3. Send it
 
