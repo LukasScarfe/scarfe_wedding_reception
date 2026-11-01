@@ -14,7 +14,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=League+Gothic&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/site.css" />
 </head>
 
@@ -23,7 +23,12 @@
 
 <div class="sheet">
   <header>
-    <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
+    <div class="nameplate">
+      <p class="ear"><b>Weather</b>Fair, with scattered dancing</p>
+      <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
+      <p class="ear"><b>Late Edition</b>Read by all the guests</p>
+    </div>
+    <p class="motto">&ldquo;All the News That&rsquo;s Fit to Dance To&rdquo;</p>
     <div class="dateline"><span>Vol. I, No. 1</span><span>Lakeshore, Ontario</span><span>Price: One Dance</span></div>
   </header>
 
@@ -39,8 +44,10 @@
   </nav>
 
   <main id="main" tabindex="-1">
+    <p class="kicker">Extra! Extra!</p>
     <h1>Local Couple Already Married, Throwing Party Anyway</h1>
     <p class="deck">Dinner and dancing confirmed; your attendance requested</p>
+    <p class="byline">By Our Society Correspondent</p>
 
     <figure class="lead-photo">
       <img src="assets/halftone-wide.png" width="2664" height="1272" alt="Lukas and Michelle holding hands among the trees on their wedding day, printed as a newspaper halftone" />
@@ -48,28 +55,44 @@
     </figure>
 
     <div class="front">
-      <article class="story">
-        <p>LAKESHORE, Ont. &mdash; Sources have confirmed that Lukas Scarfe and Michelle Yap were married on June 6, 2026, and have been insufferably happy ever since.</p>
+      <div class="front__main">
+        <article class="story news">
+        <p class="drop">LAKESHORE, Ont. &mdash; Sources have confirmed that Lukas Scarfe and Michelle Yap were married on June 6, 2026, and have been insufferably happy ever since.</p>
         <p>The pair now intend to make it everyone&rsquo;s problem.</p>
         <p>Dinner and dancing will take place Friday, May 21st, 2027, at Urban Fieldhouse, 1203 Faith Drive.</p>
         <p>Officials urge residents to attend. Footwear suited to dancing is advised.</p>
-      </article>
+        </article>
+
+        <section class="classifieds" aria-labelledby="classifieds-h">
+          <h2 id="classifieds-h">Classifieds</h2>
+          <div class="classifieds__grid">
+            <div class="ad"><h3>Wanted</h3><p>Dancers of all abilities. One night only, May 21st, 2027. Apply at the RSVP desk.</p></div>
+            <div class="ad"><h3>Notice</h3><p>Victoria Day long weekend. Residents travelling in are advised to book lodging early.</p></div>
+            <div class="ad"><h3>Lost</h3><p>Two single people, last seen June 6, 2026. Search called off.</p></div>
+          </div>
+        </section>
+      </div>
 
       <aside class="contents" aria-labelledby="contents-h">
-        <h2 id="contents-h">In This Edition</h2>
+        <h2 id="contents-h">Inside Today</h2>
         <ul>
-          <li><a href="schedule.html"><strong>Schedule</strong><span>How the evening unfolds</span></a></li>
-          <li><a href="venue.html"><strong>Venue</strong><span>Urban Fieldhouse and how to get there</span></a></li>
-          <li><a href="hotel.html"><strong>Hotel</strong><span>Where to stay for the long weekend</span></a></li>
-          <li><a href="faq.html"><strong>FAQ</strong><span>Questions from concerned residents</span></a></li>
+          <li><a href="schedule.html"><strong>Schedule</strong><em>Page A2</em><span>How the evening unfolds</span></a></li>
+          <li><a href="venue.html"><strong>Venue</strong><em>Page A3</em><span>Urban Fieldhouse and how to get there</span></a></li>
+          <li><a href="hotel.html"><strong>Hotel</strong><em>Page A4</em><span>Where to stay for the long weekend</span></a></li>
+          <li><a href="rsvp.html"><strong>RSVP</strong><em>Page A5</em><span>Reply coupon enclosed</span></a></li>
+          <li><a href="faq.html"><strong>FAQ</strong><em>Page A6</em><span>Letters from concerned residents</span></a></li>
         </ul>
       </aside>
     </div>
 
-    <a class="reply-box" href="rsvp.html"><b>Reply</b> at the RSVP desk</a>
+    <a class="reply-box" href="rsvp.html"><b>Reply</b> at the RSVP desk, Page A5</a>
   </main>
 
-  <footer class="footer">Friday, May 21st, 2027 &middot; Urban Fieldhouse, Lakeshore, Ontario</footer>
+  <nav class="jump" aria-label="Previous and next page"><a class="jump__next" href="schedule.html">Continued on Page A2: Schedule</a></nav>
+
+  <footer class="footer">Page A1 &middot; Friday, May 21st, 2027 &middot; Urban Fieldhouse, Lakeshore, Ontario</footer>
 </div>
+
+<script src="assets/js/site.js"></script>
 </body>
 </html>

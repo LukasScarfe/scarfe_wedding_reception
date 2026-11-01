@@ -11,6 +11,7 @@ hotel.html                  where to stay
 faq.html                    guest questions
 rsvp.html                   the RSVP page
 assets/css/site.css         the Gazette theme, shared by every page
+assets/js/site.js           page-turn animation, keeps pages in A1–A6 order
 assets/js/rsvp.js           RSVP lookup/reply flow
 assets/halftone-wide.png    newspaper halftone of the couple, for the front page
 worker/                     Cloudflare Worker API backing the RSVP page
@@ -112,7 +113,7 @@ before sending to anyone.
 The site is *The Scarfe–Yap Gazette*, a newspaper themed to match the invitation
 in `invite_tests/04-zoom1-wide.html`. Each page is a plain HTML file with the
 same masthead and navigation, so a new or renamed page has to be changed in the
-navigation of all six. The email keeps its own botanical design.
+navigation of all six, and in `ORDER` at the top of `assets/js/site.js`. The email keeps its own botanical design.
 
 Details not confirmed yet read "to follow" on the page. Search `TODO` for an HTML
 comment beside each one.

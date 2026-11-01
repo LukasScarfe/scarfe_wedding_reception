@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=League+Gothic&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/site.css" />
 </head>
 
@@ -17,7 +17,12 @@
 
 <div class="sheet">
   <header>
-    <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
+    <div class="nameplate">
+      <p class="ear"><b>Weather</b>Fair, with scattered dancing</p>
+      <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
+      <p class="ear"><b>Late Edition</b>Read by all the guests</p>
+    </div>
+    <p class="motto">&ldquo;All the News That&rsquo;s Fit to Dance To&rdquo;</p>
     <div class="dateline"><span>Vol. I, No. 1</span><span>Lakeshore, Ontario</span><span>Price: One Dance</span></div>
   </header>
 
@@ -37,10 +42,12 @@
 
       <!-- STEP 1: find invitation -->
       <div class="rsvp-step" id="step-lookup">
+        <p class="kicker">Public Notice</p>
         <h1>The RSVP Desk</h1>
         <p class="deck">Enter your name as it appears on your invitation.</p>
 
-        <form id="lookup-form" class="rsvp-form" novalidate>
+        <form id="lookup-form" class="rsvp-form coupon" novalidate>
+          <p class="coupon__title">Reply Coupon</p>
           <div class="field">
             <label for="first-name">First name</label>
             <input type="text" id="first-name" name="firstName" autocomplete="given-name" required maxlength="80" />
@@ -60,10 +67,12 @@
 
       <!-- STEP 2: reply form -->
       <div class="rsvp-step" id="step-reply" tabindex="-1" hidden>
+        <p class="kicker">Public Notice</p>
         <h1>You&rsquo;re Invited</h1>
         <p class="deck" id="reply-intro"></p>
 
-        <form id="reply-form" class="rsvp-form">
+        <form id="reply-form" class="rsvp-form coupon">
+          <p class="coupon__title">Reply Coupon</p>
           <div id="reply-guests"></div>
 
           <div class="field">
@@ -79,6 +88,7 @@
 
       <!-- STEP 3: done -->
       <div class="rsvp-step" id="step-done" hidden>
+        <p class="kicker">Stop the Presses</p>
         <h1>Thank You</h1>
         <p class="deck" id="done-message">Your RSVP has been received.</p>
       </div>
@@ -86,9 +96,12 @@
     </div>
   </main>
 
-  <footer class="footer">Friday, May 21st, 2027 &middot; Urban Fieldhouse, Lakeshore, Ontario</footer>
+  <nav class="jump" aria-label="Previous and next page"><a class="jump__back" href="hotel.html">Back to Page A4: Hotel</a><a class="jump__next" href="faq.html">Continued on Page A6: FAQ</a></nav>
+
+  <footer class="footer">Page A5 &middot; Friday, May 21st, 2027 &middot; Urban Fieldhouse, Lakeshore, Ontario</footer>
 </div>
 
+<script src="assets/js/site.js"></script>
 <script src="assets/js/rsvp.js"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
 <meta name="description" content="The wedding reception of Lukas Scarfe and Michelle Yap. Friday, May 21st, 2027, Urban Fieldhouse, Lakeshore, Ontario." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=League+Gothic&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/site.css" />
 </head>
 
@@ -16,7 +16,12 @@
 
 <div class="sheet">
   <header>
-    <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
+    <div class="nameplate">
+      <p class="ear"><b>Weather</b>Fair, with scattered dancing</p>
+      <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
+      <p class="ear"><b>Late Edition</b>Read by all the guests</p>
+    </div>
+    <p class="motto">&ldquo;All the News That&rsquo;s Fit to Dance To&rdquo;</p>
     <div class="dateline"><span>Vol. I, No. 1</span><span>Lakeshore, Ontario</span><span>Price: One Dance</span></div>
   </header>
 
@@ -33,20 +38,26 @@
 
   <main id="main" tabindex="-1">
     <div class="column">
+      <p class="kicker">Local Events</p>
       <h1>Order of Events</h1>
       <p class="deck">Friday, May 21st, 2027</p>
+      <p class="byline">From the Events Desk</p>
 
       <!-- TODO: replace each "Time to follow" once the venue confirms the run sheet -->
-      <dl class="schedule">
-        <div><dt class="pending">Time to follow</dt><dd>Arrival &amp; drinks</dd></div>
-        <div><dt class="pending">Time to follow</dt><dd>Dinner</dd></div>
-        <div><dt class="pending">Time to follow</dt><dd>Speeches &amp; first dance</dd></div>
-        <div><dt>Late</dt><dd>Dancing</dd></div>
+      <dl class="timetable">
+        <div><dd>Arrival &amp; drinks</dd><dt class="pending">Time to follow</dt></div>
+        <div><dd>Dinner</dd><dt class="pending">Time to follow</dt></div>
+        <div><dd>Speeches &amp; first dance</dd><dt class="pending">Time to follow</dt></div>
+        <div><dd>Dancing</dd><dt>Late</dt></div>
       </dl>
     </div>
   </main>
 
-  <footer class="footer">Friday, May 21st, 2027 &middot; Urban Fieldhouse, Lakeshore, Ontario</footer>
+  <nav class="jump" aria-label="Previous and next page"><a class="jump__back" href="index.html">Back to Page A1: Front Page</a><a class="jump__next" href="venue.html">Continued on Page A3: Venue</a></nav>
+
+  <footer class="footer">Page A2 &middot; Friday, May 21st, 2027 &middot; Urban Fieldhouse, Lakeshore, Ontario</footer>
 </div>
+
+<script src="assets/js/site.js"></script>
 </body>
 </html>

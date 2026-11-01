@@ -7,7 +7,7 @@
 <meta name="description" content="The wedding reception of Lukas Scarfe and Michelle Yap. Friday, May 21st, 2027, Urban Fieldhouse, Lakeshore, Ontario." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=League+Gothic&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/site.css" />
 </head>
 
@@ -16,7 +16,12 @@
 
 <div class="sheet">
   <header>
-    <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
+    <div class="nameplate">
+      <p class="ear"><b>Weather</b>Fair, with scattered dancing</p>
+      <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
+      <p class="ear"><b>Late Edition</b>Read by all the guests</p>
+    </div>
+    <p class="motto">&ldquo;All the News That&rsquo;s Fit to Dance To&rdquo;</p>
     <div class="dateline"><span>Vol. I, No. 1</span><span>Lakeshore, Ontario</span><span>Price: One Dance</span></div>
   </header>
 
@@ -33,21 +38,47 @@
 
   <main id="main" tabindex="-1">
     <div class="column">
+      <p class="kicker">Opinion</p>
       <h1>Letters to the Editor</h1>
       <p class="deck">Questions from concerned residents</p>
+      <p class="byline">The Editor Regrets Nothing</p>
 
-      <div class="faq">
-        <!-- TODO: fill in the answers marked "to follow"; delete any that don't apply -->
-        <details><summary>What should I wear?</summary><p class="pending">Dress code to follow. Footwear suited to dancing is advised.</p></details>
-        <details><summary>Can I bring a plus one?</summary><p>Your formal invitation will name who&rsquo;s included.</p></details>
-        <details><summary>Are children welcome?</summary><p class="pending">Answer to follow.</p></details>
-        <details><summary>Any dietary requirements?</summary><p>Add them to your RSVP. Each guest has their own dietary field.</p></details>
-        <details><summary>Is there a gift registry?</summary><p class="pending">Answer to follow.</p></details>
+      <!-- TODO: fill in the answers marked "to follow"; delete any that don't apply -->
+      <div class="letters">
+        <article class="letter">
+          <h2>What should I wear?</h2>
+          <p class="letter__from">&mdash; Underdressed in Windsor</p>
+          <p class="letter__reply"><b>The Editor replies:</b> <span class="pending">Dress code to follow. Footwear suited to dancing is advised.</span></p>
+        </article>
+        <article class="letter">
+          <h2>Can I bring a plus one?</h2>
+          <p class="letter__from">&mdash; Hopeful in Lakeshore</p>
+          <p class="letter__reply"><b>The Editor replies:</b> <span>Your formal invitation will name who&rsquo;s included.</span></p>
+        </article>
+        <article class="letter">
+          <h2>Are children welcome?</h2>
+          <p class="letter__from">&mdash; Parent of Two</p>
+          <p class="letter__reply"><b>The Editor replies:</b> <span class="pending">Answer to follow.</span></p>
+        </article>
+        <article class="letter">
+          <h2>Any dietary requirements?</h2>
+          <p class="letter__from">&mdash; Hungry on Faith Drive</p>
+          <p class="letter__reply"><b>The Editor replies:</b> <span>Add them to your RSVP. Each guest has their own dietary field.</span></p>
+        </article>
+        <article class="letter">
+          <h2>Is there a gift registry?</h2>
+          <p class="letter__from">&mdash; Well-Meaning Aunt</p>
+          <p class="letter__reply"><b>The Editor replies:</b> <span class="pending">Answer to follow.</span></p>
+        </article>
       </div>
     </div>
   </main>
 
-  <footer class="footer">Friday, May 21st, 2027 &middot; Urban Fieldhouse, Lakeshore, Ontario</footer>
+  <nav class="jump" aria-label="Previous and next page"><a class="jump__back" href="rsvp.html">Back to Page A5: RSVP</a></nav>
+
+  <footer class="footer">Page A6 &middot; Friday, May 21st, 2027 &middot; Urban Fieldhouse, Lakeshore, Ontario</footer>
 </div>
+
+<script src="assets/js/site.js"></script>
 </body>
 </html>
