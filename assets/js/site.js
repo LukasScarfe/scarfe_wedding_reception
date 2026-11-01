@@ -1,11 +1,11 @@
 /* ══════════════════════════════════════════════════════════════
    Page turns.
 
-   The six pages are read in order, A1 to A6, and each turn works like
-   opening a broadsheet at its centre fold. Going forward, the right half
-   of the page lifts and turns over, and its back carries the left half
-   of the next page. Going back runs the same turn in reverse. A jump
-   across several pages riffles through each one in between.
+   The six pages are read in order, A1 to A6, and each one is a whole
+   sheet hinged at the left edge of the screen. Going forward, the page
+   turns over to reveal the next one. Going back, the earlier page turns
+   back down on top. A jump across several pages riffles through each one
+   in between, speeding up as it goes.
 
    Progressive enhancement: every link is a normal link. If scripts
    fail, a fetch fails, or the guest prefers reduced motion, the browser
@@ -15,10 +15,16 @@
   'use strict';
 
   var ORDER = ['index.html', 'schedule.html', 'venue.html', 'hotel.html', 'rsvp.html', 'faq.html'];
-  var STRIPS = 6;           // more strips bend more smoothly, but cost more
-  var TURN_MS = 950;        // one page
-  var RIFFLE_MS = 420;      // each page of a multi-page jump
+  var STRIPS = 8;           // more strips bend more smoothly, but cost more
+  var TURN_MS = 950;        // a single page
+  var OVERLAP = 4;
   var BEND_DEG = 50;        // curl at mid-turn; above ~55 the edge dips through the page beneath
+
+  // A riffle starts here and speeds up on every page after it.
+  var RIFFLE_START_MS = 500;
+  var RIFFLE_SPEEDUP = .58;
+  var RIFFLE_FASTEST_MS = 130;
+  var RIFFLE_LANDING_MS = 240;   // the last page settles rather than slams
 
   var reduced = window.matchMedia &&
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -45,8 +51,28 @@
     return cache[name];
   }
 
-  function ease(t) {
-    return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  var EASE = {
+    both: function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; },
+    start: function (t) { return t * t; },
+    steady: function (t) { return t; },
+    land: function (t) { return 1 - (1 - t) * (1 - t); }
+  };
+
+  /* How long each page of a turn takes, and how it moves. Pages in the
+     middle of a riffle run at a steady speed so it never pauses. */
+  function timing(count) {
+    if (count === 1) return [{ ms: TURN_MS, ease: EASE.both }];
+
+    var turns = [];
+    for (var i = 0; i < count; i++) {
+      var last = i === count - 1;
+      var ms = RIFFLE_START_MS * Math.pow(RIFFLE_SPEEDUP, i);
+      turns.push({
+        ms: last ? Math.max(ms, RIFFLE_LANDING_MS) : Math.max(ms, RIFFLE_FASTEST_MS),
+        ease: last ? EASE.land : i === 0 ? EASE.start : EASE.steady
+      });
+    }
+    return turns;
   }
 
   /* A window onto part of a page. Copies carry no ids, so they can't
@@ -78,32 +104,24 @@
     return shade;
   }
 
-  /* `left` stays on the left of the fold, `right` is revealed on the
-     right. The leaf is the left page's right half, backed by the right
-     page's left half, built as a chain of strips hinged to one another. */
-  function buildStage(left, leftScroll, right, rightScroll) {
+  /* The leaf is one whole page, built as a chain of strips hinged to one
+     another and to the left edge of the screen. `under` lies beneath it. */
+  function buildStage(leaf, leafScroll, under, underScroll) {
     var width = document.documentElement.clientWidth;
     var height = window.innerHeight;
-    var half = Math.floor(width / 2);
-    var stripWidth = Math.ceil(half / STRIPS);
+    var stripWidth = Math.ceil(width / STRIPS);
 
     var stage = document.createElement('div');
     stage.className = 'turn-stage';
     stage.setAttribute('aria-hidden', 'true');
     stage.inert = true;
-    stage.style.perspective = Math.max(1800, width * 2.2) + 'px';
+    stage.style.perspective = Math.max(2000, width * 2.4) + 'px';
 
-    var under = piece(left, 0, half, height, leftScroll, 'turn-under');
-    var underRight = piece(right, half, width - half, height, rightScroll, 'turn-under');
-    underRight.style.left = half + 'px';
-    var castLeft = document.createElement('div');
-    castLeft.className = 'turn-cast turn-cast--left';
-    var castRight = document.createElement('div');
-    castRight.className = 'turn-cast turn-cast--right';
-    under.appendChild(castLeft);
-    underRight.appendChild(castRight);
-    stage.appendChild(under);
-    stage.appendChild(underRight);
+    var below = piece(under, 0, width, height, underScroll, 'turn-under');
+    var cast = document.createElement('div');
+    cast.className = 'turn-cast';
+    below.appendChild(cast);
+    stage.appendChild(below);
 
     var strips = [];
     var parent = stage;
@@ -112,11 +130,13 @@
       var strip = document.createElement('div');
       strip.className = 'turn-strip';
       strip.style.width = stripWidth + 'px';
-      strip.style.left = (i === 0 ? half : stripWidth) + 'px';
+      strip.style.left = (i === 0 ? 0 : stripWidth) + 'px';
 
-      // +1px overlap hides hairline gaps between neighbouring strips
-      var front = piece(left, half + i * stripWidth, stripWidth + 1, height, leftScroll, 'turn-face');
-      var back = piece(right, half - (i + 1) * stripWidth - 1, stripWidth + 1, height, rightScroll, 'turn-face turn-face--back');
+      // A few pixels of overlap hide hairline gaps between neighbouring strips
+      var front = piece(leaf, i * stripWidth, stripWidth + OVERLAP, height, leafScroll, 'turn-face');
+      var back = document.createElement('div');
+      back.className = 'turn-face turn-face--back';
+      back.style.width = (stripWidth + OVERLAP) + 'px';
 
       strip.appendChild(front);
       strip.appendChild(back);
@@ -126,7 +146,7 @@
     }
 
     document.body.appendChild(stage);
-    return { el: stage, strips: strips, castLeft: castLeft, castRight: castRight };
+    return { el: stage, strips: strips, cast: cast };
   }
 
   function render(stage, progress) {
@@ -146,11 +166,10 @@
       strip.shades[1].style.background = 'linear-gradient(90deg,' + far + ',' + near + ')';
     });
 
-    stage.castRight.style.opacity = lift;
-    stage.castLeft.style.opacity = lift * progress;
+    stage.cast.style.opacity = lift;
   }
 
-  function animate(stage, ms, from, to) {
+  function animate(stage, ms, from, to, ease) {
     return new Promise(function (done) {
       var start = null;
       function frame(now) {
@@ -184,7 +203,7 @@
 
   /* The stage covers the screen, so the live page can change underneath
      it straight away in either direction. */
-  function turn(doc, ms, forward) {
+  function turn(doc, how, forward) {
     var current = document.querySelector('.sheet');
     var next = doc.querySelector('.sheet');
     var scrollY = window.scrollY;
@@ -196,7 +215,7 @@
     render(stage, forward ? 0 : 1);
     show(doc);
 
-    return animate(stage, ms, forward ? 0 : 1, forward ? 1 : 0).then(function () {
+    return animate(stage, how.ms, forward ? 0 : 1, forward ? 1 : 0, how.ease).then(function () {
       stage.el.remove();
     });
   }
@@ -207,7 +226,7 @@
     var here = ORDER.indexOf(from);
     var step = to > here ? 1 : -1;
     var count = Math.abs(to - here);
-    var ms = count === 1 ? TURN_MS : RIFFLE_MS;
+    var turns = timing(count);
 
     var route = [];
     for (var i = 1; i <= count; i++) route.push(ORDER[here + step * i]);
@@ -215,9 +234,9 @@
     turning = true;
     return Promise.all(route.map(load)).then(function (docs) {
       if (push) history.pushState(null, '', name);
-      return docs.reduce(function (previous, doc) {
+      return docs.reduce(function (previous, doc, i) {
         return previous.then(function () {
-          return turn(doc, ms, step > 0);
+          return turn(doc, turns[i], step > 0);
         });
       }, Promise.resolve()).then(function () {
         var last = docs[docs.length - 1];

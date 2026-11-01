@@ -396,10 +396,11 @@ h2 {
 
 .turn-under { position: absolute; top: 0; left: 0; height: 100%; overflow: hidden; }
 
-/* The shadow the lifted page throws, and the crease of the centre fold. */
-.turn-cast { position: absolute; inset: 0; opacity: 0; }
-.turn-cast--left  { background: linear-gradient(270deg, rgba(0, 0, 0, .46), rgba(0, 0, 0, .1) 40%, transparent 80%); }
-.turn-cast--right { background: linear-gradient(90deg, rgba(0, 0, 0, .46), rgba(0, 0, 0, .1) 40%, transparent 80%); }
+/* The shadow the lifted page throws on the page beneath it. */
+.turn-cast {
+  position: absolute; inset: 0; opacity: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, .46), rgba(0, 0, 0, .14) 45%, transparent 85%);
+}
 
 .turn-strip {
   position: absolute; top: 0; height: 100%;
@@ -414,7 +415,11 @@ h2 {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
-.turn-face--back { transform: rotateY(180deg); }
+.turn-face--back {
+  transform: rotateY(180deg);
+  background-color: var(--paper-low);
+  background-image: var(--grain);
+}
 
 .leaf-page { position: absolute; top: 0; overflow: hidden; }
 
