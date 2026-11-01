@@ -11,12 +11,13 @@ GITHUB_REPO     = "scarfe_wedding_rsvps"
 GITHUB_BRANCH   = "main"
 ALLOWED_ORIGIN  = "https://michelleyap.lukasscarfe.com"
 
-# Serve the API at rsvp-api.michelleyap.lukasscarfe.com instead of a
-# workers.dev URL. Requires adding this as a Custom Domain on the
-# worker (Cloudflare dashboard → Workers → this worker → Settings →
-# Domains & Routes) — see worker/DEPLOY.md.
+# Serve the API at rsvp-api.lukasscarfe.com instead of a workers.dev
+# URL. `wrangler deploy` creates the Custom Domain, its DNS record and
+# its certificate. Keep it one level under lukasscarfe.com: the
+# two-level rsvp-api.michelleyap.lukasscarfe.com never got a working
+# certificate. No path or wildcard is allowed here.
 [[routes]]
-pattern     = "rsvp-api.michelleyap.lukasscarfe.com/*"
+pattern     = "rsvp-api.lukasscarfe.com"
 custom_domain = true
 
 # Secrets — set with `wrangler secret put <NAME>`, never written here:

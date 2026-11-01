@@ -85,13 +85,14 @@ needs to change.
 npx wrangler deploy
 ```
 
-This publishes the worker under a `workers.dev` URL first. To serve it
-at `rsvp-api.michelleyap.lukasscarfe.com` (what `assets/js/rsvp.js`
-expects), go to the Cloudflare dashboard → Workers & Pages → this
-worker → **Settings → Domains & Routes → Add → Custom Domain**, and
-enter `rsvp-api.michelleyap.lukasscarfe.com`. Since `lukasscarfe.com`
-is already on Cloudflare, it creates the DNS record for you — no manual
-CNAME needed, and no interaction with the site's own DNS/CNAME setup.
+This publishes the worker at `rsvp-api.lukasscarfe.com` (what
+`assets/js/rsvp.js` expects), using the route in `wrangler.toml`. Since
+`lukasscarfe.com` is already on Cloudflare, the deploy creates the DNS
+record and certificate for you — no manual CNAME needed, and no
+interaction with the site's own DNS/CNAME setup.
+
+Keep the hostname one level under `lukasscarfe.com`. The two-level
+`rsvp-api.michelleyap.lukasscarfe.com` never got a working certificate.
 
 If you'd rather use a different hostname, update `API_BASE` at the top
 of `assets/js/rsvp.js` to match.

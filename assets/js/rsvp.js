@@ -12,7 +12,7 @@
 
   // ✏️ EDIT after deploying the worker, if you used a different
   // custom domain than the one in worker/wrangler.toml.
-  var API_BASE = 'https://rsvp-api.michelleyap.lukasscarfe.com';
+  var API_BASE = 'https://rsvp-api.lukasscarfe.com';
 
   var stepLookup = document.getElementById('step-lookup');
   var stepReply  = document.getElementById('step-reply');
