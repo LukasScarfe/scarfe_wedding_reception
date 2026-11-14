@@ -1,7 +1,9 @@
 /* ══════════════════════════════════════════════════════════════
    Page turns.
 
-   The six pages are read in order, A1 to A6, and each one is a whole
+   The pages are read in the order of the section menu, and
+   the menu is the only place that order is written down, so this
+   script can never disagree with the pages about it. Each one is a whole
    sheet hinged at the left edge of the screen. Going forward, the page
    turns over to reveal the next one. Going back, the earlier page turns
    back down on top. A jump across several pages riffles through each one
@@ -14,7 +16,6 @@
 (function () {
   'use strict';
 
-  var ORDER = ['index.html', 'rsvp.html', 'schedule.html', 'venue.html', 'hotel.html', 'faq.html'];
   var STRIPS = 8;           // more strips bend more smoothly, but cost more
   var TURN_MS = 950;        // a single page
   var OVERLAP = 4;
@@ -30,17 +31,25 @@
                 window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduced || !window.fetch || !window.history.pushState) return;
 
+  function fileOf(url) {
+    return new URL(url, location.href).pathname.split('/').pop() || 'index.html';
+  }
+
+  var ORDER = Array.prototype.map.call(document.querySelectorAll('.nav a[href]'),
+                                       function (a) { return fileOf(a.href); });
+  if (ORDER.length < 2) return;
+
   var turning = false;
   var cache = {};
 
   function pageOf(url) {
-    var name = new URL(url, location.href).pathname.split('/').pop() || 'index.html';
+    var name = fileOf(url);
     return ORDER.indexOf(name) === -1 ? null : name;
   }
 
   function load(name) {
     if (!cache[name]) {
-      cache[name] = fetch(name).then(function (res) {
+      cache[name] = fetch(name, { cache: 'no-cache' }).then(function (res) {
         if (!res.ok) throw new Error('Could not load ' + name);
         return res.text();
       }).then(function (html) {
@@ -184,8 +193,9 @@
     });
   }
 
-  /* Swap the live page. rsvp.js binds to the form's elements, so it has
-     to run again each time the form is put back on the page. */
+  /* Swap the live page. A page's own scripts (rsvp.js, puzzle.js, marked
+     data-page-script) bind to its elements, so they run again each time
+     the page is put back. */
   function show(doc) {
     var sheet = document.querySelector('.sheet');
     sheet.replaceWith(document.importNode(doc.querySelector('.sheet'), true));
@@ -194,11 +204,14 @@
   }
 
   function startScripts(doc) {
-    var tag = doc.querySelector('script[src$="rsvp.js"]');
-    if (!tag) return;
-    var script = document.createElement('script');
-    script.src = tag.getAttribute('src');
-    document.body.appendChild(script);
+    // The last page's tags have done their work; don't let them pile up.
+    document.querySelectorAll('body > script[data-page-script]').forEach(function (old) { old.remove(); });
+    doc.querySelectorAll('script[data-page-script]').forEach(function (tag) {
+      var script = document.createElement('script');
+      script.src = tag.getAttribute('src');
+      script.setAttribute('data-page-script', '');
+      document.body.appendChild(script);
+    });
   }
 
   /* The stage covers the screen, so the live page can change underneath
@@ -290,7 +303,7 @@
     if (!root.classList.contains('intro')) return;
     function reveal() { root.classList.remove('intro'); }
 
-    var behind = ORDER.slice(1).reverse();   // A6 first, down to A2
+    var behind = ORDER.slice(1).reverse();   // the back page first, down to A2
     turning = true;
     Promise.all(behind.map(load)).then(function (docs) {
       var sheets = docs.map(function (doc) { return doc.querySelector('.sheet'); });

@@ -9,16 +9,19 @@ rsvp.html                   A2, the RSVP page
 schedule.html               A3, the order of events
 venue.html                  A4, the venue and getting there
 hotel.html                  A5, where to stay
-faq.html                    A6, guest questions
+puzzle.html                 A6, the daily puzzle (Heart board of yearpuzzle.michelleyap.ca)
+faq.html                    A7, guest questions
 assets/css/site.css         the Gazette theme, shared by every page
-assets/js/site.js           page-turn animation, keeps pages in A1–A6 order
+assets/js/site.js           page turns, in the order of the section menu
+assets/js/puzzle.js         the daily puzzle, ported from The Whole Year Puzzle
 assets/js/rsvp.js           RSVP lookup/reply flow
 assets/halftone-front.png   newspaper halftone of the couple, for the front page (same as invite/)
 assets/halftone-venue.png   newspaper halftone of the hall, for the venue page
 worker/                     Cloudflare Worker API backing the RSVP page
 worker/DEPLOY.md            one-time setup for the RSVP system
 tools/make-botanicals.js    regenerates the leaf artwork
-tools/make_venue_halftone.py  regenerates halftone-venue.png from tools/sources/
+tools/stamp_assets.py       stamps CSS/JS links with ?v= hashes (run after editing them)
+tools/make_venue_halftone.py  regenerates halftone-venue.png from tools/sources/ (photo: Leah Marie Wedding Photography)
 
 assets/photo-email.jpg      880×1323, 135 KB — retina, displays at 420px
 assets/photo-large.jpg      1600×2405, 403 KB — for the website later
@@ -115,7 +118,14 @@ before sending to anyone.
 The site is *The Scarfe–Yap Gazette*, a newspaper themed to match the invitation
 in `invite_tests/04-zoom1-wide.html`. Each page is a plain HTML file with the
 same masthead and navigation, so a new or renamed page has to be changed in the
-navigation of all six, and in `ORDER` at the top of `assets/js/site.js`. The email keeps its own botanical design.
+navigation of all six. The order of that menu is the reading order: page turns,
+the opening riffle and page numbers all follow it, so if you reorder it, renumber
+the "Page A…" footers, the Back/Continued links and the front page's "Inside
+Today" list to match. The email keeps its own botanical design.
+
+Pages load the stylesheet and scripts with a `?v=` stamp so browsers never mix a
+new page with an old cached script. After changing anything in `assets/css/` or
+`assets/js/`, run `python3 tools/stamp_assets.py` before committing.
 
 Details not confirmed yet read "to follow" on the page. Search `TODO` for an HTML
 comment beside each one.

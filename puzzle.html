@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Daily Puzzle &middot; The Scarfe&ndash;Yap Gazette</title>
+<meta name="description" content="The wedding reception of Lukas Scarfe and Michelle Yap. Friday, May 21st, 2027, Urban Field House, Lakeshore, Ontario." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=League+Gothic&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/site.css?v=bc49a1f517" />
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="sheet">
+  <header>
+    <div class="nameplate">
+      <p class="ear"><b>Weather</b>Hopefully no rain!</p>
+      <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
+      <p class="ear"><b>Late Edition</b>7 Pages</p>
+    </div>
+    <div class="dateline"><span>Vol. I, No. 1</span><span>Lakeshore, Ontario</span><span>Price: One Dance</span></div>
+  </header>
+
+  <nav class="nav" aria-label="Sections">
+    <ul>
+      <li><a href="index.html">Front Page</a></li>
+      <li><a href="rsvp.html">RSVP</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
+      <li><a href="venue.html">Venue</a></li>
+      <li><a href="hotel.html">Hotel</a></li>
+      <li><a href="puzzle.html" aria-current="page">Puzzle</a></li>
+      <li><a href="faq.html">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <main id="main" tabindex="-1">
+    <div class="column">
+      <p class="kicker">Puzzles</p>
+      <h1>The Daily Puzzle</h1>
+      <p class="deck">The Whole Year Puzzle: Heart</p>
+
+      <section class="puzzle" id="puzzle" aria-labelledby="puzzle-date">
+        <header class="puzzle__head">
+          <h2 id="puzzle-date">Today&rsquo;s puzzle</h2>
+          <p id="puzzle-count"></p>
+        </header>
+        <p class="puzzle__rules">Fit all nine pieces into the heart so they cover every cell except today&rsquo;s month and day. Pieces may be turned and flipped.</p>
+        <svg class="puzzle__board" id="puzzle-board" aria-label="Puzzle board"></svg>
+        <p class="puzzle__status" id="puzzle-status" aria-live="polite"></p>
+        <div class="puzzle__tools">
+          <button type="button" id="puzzle-ccw" title="Rotate left (A)" aria-label="Rotate left">&#8634;<span class="lbl"> Rotate left</span></button>
+          <button type="button" id="puzzle-cw" title="Rotate right (D)" aria-label="Rotate right">&#8635;<span class="lbl"> Rotate right</span></button>
+          <button type="button" id="puzzle-flip" title="Flip horizontal (S)" aria-label="Flip horizontal">&#8644;<span class="lbl"> Flip</span></button>
+          <button type="button" id="puzzle-flipv" title="Flip vertical (W)" aria-label="Flip vertical">&#8645;<span class="lbl"> Flip</span></button>
+          <button type="button" id="puzzle-clear">Clear</button>
+        </div>
+        <div class="puzzle__tray" id="puzzle-tray"></div>
+        <p class="puzzle__hint">Drag pieces onto the board. Tap a piece to pick it up, and tap it again to rotate it. Keys: A and D rotate, W and S flip, Space returns it to the tray.</p>
+        <noscript><p class="notice">The puzzle needs JavaScript. You can play it at <a href="https://yearpuzzle.michelleyap.ca/heart/">yearpuzzle.michelleyap.ca</a>.</p></noscript>
+      </section>
+
+      <p class="notice">Stuck? Every solution for today is at <a id="puzzle-solutions" href="https://yearpuzzle.michelleyap.ca/" target="_blank" rel="noopener">yearpuzzle.michelleyap.ca</a>.</p>
+    </div>
+  </main>
+
+  <nav class="jump" aria-label="Previous and next page"><a class="jump__back" href="hotel.html">Back to Page A5: Hotel</a><a class="jump__next" href="faq.html">Continued on Page A7: FAQ</a></nav>
+
+  <footer class="footer">Page A6 &middot; Friday, May 21st, 2027 &middot; Urban Field House, Lakeshore, Ontario</footer>
+</div>
+
+<script src="assets/js/site.js?v=06abd61b57"></script>
+<script src="assets/js/puzzle.js?v=8c791c7fcc" data-page-script></script>
+</body>
+</html>
