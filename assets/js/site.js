@@ -53,7 +53,10 @@
         if (!res.ok) throw new Error('Could not load ' + name);
         return res.text();
       }).then(function (html) {
-        return new DOMParser().parseFromString(html, 'text/html');
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        // Let page scripts draw into the copy before it's ever seen (puzzle.js).
+        document.dispatchEvent(new CustomEvent('gazette:pageloaded', { detail: doc }));
+        return doc;
       });
       cache[name].catch(function () { delete cache[name]; });
     }
@@ -193,7 +196,7 @@
     });
   }
 
-  /* Swap the live page. A page's own scripts (rsvp.js, puzzle.js, marked
+  /* Swap the live page. A page's own scripts (rsvp.js, marked
      data-page-script) bind to its elements, so they run again each time
      the page is put back. */
   function show(doc) {
@@ -255,6 +258,7 @@
         var last = docs[docs.length - 1];
         turning = false;
         startScripts(last);
+        document.dispatchEvent(new Event('gazette:pageshown'));
         var main = document.getElementById('main');
         if (main) main.focus({ preventScroll: true });
       });

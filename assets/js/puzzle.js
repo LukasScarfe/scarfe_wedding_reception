@@ -8,15 +8,16 @@
    date in paper), and the piece in hand is outlined. Solutions live on the original site, so a solved or
    stuck reader is sent there.
 
-   site.js runs this again each time the page is turned to, so all the
-   state lives in one instance, and the few document-wide listeners are
-   added once and talk to whichever instance is current.
+   Every page loads this, ahead of site.js, so the puzzle can be drawn
+   into a page that hasn't been shown yet: when site.js fetches the
+   puzzle page for a page turn or the opening riffle, the starting
+   position is painted into that copy, so the board is there while the
+   page turns. Once the page is on screen, a live puzzle takes over.
    ══════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  var root = document.getElementById('puzzle');
-  if (!root) return;
+  if (window.GazettePuzzle) return;
 
   var SITE = 'https://yearpuzzle.michelleyap.ca/';
   var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
@@ -71,8 +72,6 @@
   var DATES = [M - 1, 11 + D];   // the two cells left open
 
   var SVGNS = 'http://www.w3.org/2000/svg';
-  var $ = function (id) { return document.getElementById(id); };
-  var board = $('puzzle-board'), tray = $('puzzle-tray');
 
   var ink, paper, paperLow, inkSoft;
   function readInks() {
@@ -94,6 +93,30 @@
     flipv: function (cells) { var H = dims(cells)[0]; return cells.map(function (q) { return [H - 1 - q[0], q[1]]; }); }
   };
   function gapOf(cs) { return Math.max(1, Math.round(cs * 0.07)); }
+
+  // One path per piece, its own cells joined across the gaps between them.
+  function piecePath(cells, cs, ox, oy) {
+    ox = ox || 0; oy = oy || 0;
+    var g = gapOf(cs), has = {};
+    cells.forEach(function (rc) { has[rc[0] * 8 + rc[1]] = true; });
+    function rect(x, y, w, h) { return 'M' + x + ' ' + y + 'h' + w + 'v' + h + 'h' + (-w) + 'z'; }
+    var d = '';
+    cells.forEach(function (rc) {
+      var r = rc[0], c = rc[1], x = ox + c * cs, y = oy + r * cs;
+      var right = has[r * 8 + c + 1], below = has[(r + 1) * 8 + c];
+      d += rect(x + g, y + g, cs - 2 * g, cs - 2 * g);
+      if (right) d += rect(x + cs - g, y + g, 2 * g, cs - 2 * g);
+      if (below) d += rect(x + g, y + cs - g, cs - 2 * g, 2 * g);
+      if (right && below && has[(r + 1) * 8 + c + 1]) d += rect(x + cs - g, y + cs - g, 2 * g, 2 * g);
+    });
+    return d;
+  }
+
+  /* One puzzle on one copy of the page. `live` is the page on screen,
+     which can be played; otherwise it's a copy being painted for a turn. */
+  function Puzzle(doc, live) {
+  var $ = function (id) { return doc.getElementById(id); };
+  var root = $('puzzle'), board = $('puzzle-board'), tray = $('puzzle-tray');
 
   // Each piece keeps its orientation (cells from 0,0) and its board spot, or null in the tray.
   var P = {
@@ -127,24 +150,6 @@
     return best;
   }
 
-  // One path per piece, its own cells joined across the gaps between them.
-  function piecePath(cells, cs, ox, oy) {
-    ox = ox || 0; oy = oy || 0;
-    var g = gapOf(cs), has = {};
-    cells.forEach(function (rc) { has[rc[0] * 8 + rc[1]] = true; });
-    function rect(x, y, w, h) { return 'M' + x + ' ' + y + 'h' + w + 'v' + h + 'h' + (-w) + 'z'; }
-    var d = '';
-    cells.forEach(function (rc) {
-      var r = rc[0], c = rc[1], x = ox + c * cs, y = oy + r * cs;
-      var right = has[r * 8 + c + 1], below = has[(r + 1) * 8 + c];
-      d += rect(x + g, y + g, cs - 2 * g, cs - 2 * g);
-      if (right) d += rect(x + cs - g, y + g, 2 * g, cs - 2 * g);
-      if (below) d += rect(x + g, y + cs - g, cs - 2 * g, 2 * g);
-      if (right && below && has[(r + 1) * 8 + c + 1]) d += rect(x + cs - g, y + cs - g, 2 * g, 2 * g);
-    });
-    return d;
-  }
-
   // Solid ink. The piece in hand gets a thin ink outline standing just off its edge.
   function pieceSvg(p, cs, ox, oy) {
     var d = piecePath(P.pieces[p].cells, cs, ox, oy);
@@ -168,7 +173,8 @@
   function render() {
     if (P.drag) cancelDrag(false);
     if (solved() && !P.won) P.sel = null;
-    var col = root.clientWidth;
+    // A copy that isn't on screen has no width yet; it will be as wide as this page's column.
+    var col = live ? root.clientWidth : columnWidth();
     P.cs = Math.max(24, Math.min(56, Math.floor((col - 8) / HEART.width)));
     P.tcs = Math.max(12, Math.min(28, Math.floor((col - 40) / 18)));
     drawBoard(); drawTray(); status();
@@ -286,6 +292,7 @@
     e.preventDefault();
   }
 
+  if (live) {
   board.addEventListener('pointerdown', function (e) {
     if (P.drag || e.button > 0) return;
     var t = e.target.closest('[data-pp]');
@@ -342,6 +349,7 @@
   $('puzzle-flip').onclick = function () { if (P.sel !== null) turn(P.sel, 'flip'); };
   $('puzzle-flipv').onclick = function () { if (P.sel !== null) turn(P.sel, 'flipv'); };
   $('puzzle-clear').onclick = function () { P.pieces.forEach(function (q) { q.at = null; }); P.sel = null; render(); };
+  }
 
   // WASD + Space, so one hand stays on the keyboard while the other drags.
   function onKey(e) {
@@ -361,25 +369,45 @@
     cancelAnimationFrame(resizeFrame); resizeFrame = requestAnimationFrame(render);
   }
 
-  /* ─────────────── start ─────────────── */
-
   $('puzzle-date').textContent = WEEKDAYS[today.getDay()] + ', ' + MONTHS[M - 1] + ' ' + D;
   var n = HEART.counts[M - 1][D - 1];
   $('puzzle-count').textContent = n + (n === 1 ? ' solution' : ' solutions') + ' to find';
   $('puzzle-solutions').href = SITE + '#solutions/heart/' + M + '-' + D;
+  render();
 
-  window.gazettePuzzle = {
-    key: function (e) { if (board.isConnected) onKey(e); },
-    resize: function () { if (board.isConnected) onResize(); }
-  };
-  if (!window.gazettePuzzleBound) {
-    window.gazettePuzzleBound = true;
-    document.addEventListener('keydown', function (e) { window.gazettePuzzle.key(e); });
-    window.addEventListener('resize', function () { window.gazettePuzzle.resize(); });
+  return { board: board, render: render, onKey: onKey, onResize: onResize };
   }
 
-  readInks();
-  render();
-  // The fonts may land after the first draw; the labels are measured in them.
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (board.isConnected) render(); });
+  /* ─────────────── start ─────────────── */
+
+  function columnWidth() {
+    var main = document.getElementById('main');
+    return Math.min(760, main ? main.clientWidth : 760);   // .column's max-width
+  }
+
+  var current = null;   // the live puzzle, if the page on screen has one
+  function isLive() { return current && current.board === document.getElementById('puzzle-board'); }
+
+  // Start a live puzzle on the page on screen, unless it already has one.
+  function start() {
+    if (!document.getElementById('puzzle') || isLive()) return;
+    readInks();
+    current = Puzzle(document, true);
+    // The fonts may land after the first draw.
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (isLive()) current.render(); });
+  }
+
+  // Paint the starting position into a fetched copy of a page, if it's the puzzle page.
+  function paint(doc) {
+    if (doc === document || !doc.getElementById('puzzle')) return;
+    readInks();
+    Puzzle(doc, false);
+  }
+
+  window.GazettePuzzle = { start: start, paint: paint };
+  document.addEventListener('gazette:pageloaded', function (e) { paint(e.detail); });
+  document.addEventListener('gazette:pageshown', start);
+  document.addEventListener('keydown', function (e) { if (isLive()) current.onKey(e); });
+  window.addEventListener('resize', function () { if (isLive()) current.onResize(); });
+  start();
 })();
