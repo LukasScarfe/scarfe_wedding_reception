@@ -4,10 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>The Scarfe&ndash;Yap Gazette</title>
-<meta name="description" content="The wedding reception of Lukas Scarfe and Michelle Yap. Friday, May 21st, 2027, Urban Fieldhouse, Lakeshore, Ontario." />
+<meta name="description" content="The wedding reception of Lukas Scarfe and Michelle Yap. Friday, May 21st, 2027, Urban Field House, Lakeshore, Ontario." />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Local Couple Already Married, Throwing Party Anyway" />
-<meta property="og:description" content="The wedding reception of Lukas Scarfe and Michelle Yap. Friday, May 21st, 2027, Urban Fieldhouse, Lakeshore, Ontario." />
+<meta property="og:title" content="Lukas &amp; Michelle Already Married, Now Throwing Reception" />
+<meta property="og:description" content="The wedding reception of Lukas Scarfe and Michelle Yap. Friday, May 21st, 2027, Urban Field House, Lakeshore, Ontario." />
 <meta property="og:image" content="https://michelleyap.lukasscarfe.com/assets/photo-large.jpg" />
 <meta property="og:url" content="https://michelleyap.lukasscarfe.com/" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -16,6 +16,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Playfair+Display:wght@800;900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=League+Gothic&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="assets/css/site.css" />
+<script>
+  /* The first time the Gazette is opened in a tab, it riffles from the back
+     page to the front (assets/js/site.js). Hide the front page until then.
+     A fallback reveals it in case the script never runs. */
+  (function () {
+    try {
+      if (sessionStorage.getItem('riffled') || !window.fetch || !history.pushState ||
+          (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+      sessionStorage.setItem('riffled', '1');
+    } catch (e) { return; }
+    var root = document.documentElement;
+    root.classList.add('intro');
+    setTimeout(function () { root.classList.remove('intro'); }, 4000);
+  })();
+</script>
 </head>
 
 <body>
@@ -24,11 +39,10 @@
 <div class="sheet">
   <header>
     <div class="nameplate">
-      <p class="ear"><b>Weather</b>Fair, with scattered dancing</p>
+      <p class="ear"><b>Weather</b>Hopefully no rain!</p>
       <a class="mast" href="index.html">The Scarfe&ndash;Yap Gazette</a>
-      <p class="ear"><b>Late Edition</b>Read by all the guests</p>
+      <p class="ear"><b>Late Edition</b>6 Pages</p>
     </div>
-    <p class="motto">&ldquo;All the News That&rsquo;s Fit to Dance To&rdquo;</p>
     <div class="dateline"><span>Vol. I, No. 1</span><span>Lakeshore, Ontario</span><span>Price: One Dance</span></div>
   </header>
 
@@ -44,23 +58,21 @@
   </nav>
 
   <main id="main" tabindex="-1">
-    <p class="kicker">Extra! Extra!</p>
-    <h1>Local Couple Already Married, Throwing Party Anyway</h1>
+    <h1>Lukas &amp; Michelle Already Married, Now Throwing Reception</h1>
     <p class="deck">Dinner and dancing confirmed; your attendance requested</p>
-    <p class="byline">By Our Society Correspondent</p>
 
     <figure class="lead-photo">
-      <img src="assets/halftone-wide.png" width="2664" height="1272" alt="Lukas and Michelle holding hands among the trees on their wedding day, printed as a newspaper halftone" />
-      <figcaption>The accused, pictured June 6, 2026, showing no remorse.</figcaption>
+      <img src="assets/halftone-front.png" width="2664" height="1470" alt="Lukas and Michelle holding hands among the trees on their wedding day, printed as a newspaper halftone" />
+      <figcaption>The happily wedded couple, pictured June 6, 2026.</figcaption>
     </figure>
 
     <div class="front">
       <div class="front__main">
         <article class="story news">
         <p class="drop">LAKESHORE, Ont. &mdash; Sources have confirmed that Lukas Scarfe and Michelle Yap were married on June 6, 2026, and have been insufferably happy ever since.</p>
-        <p>The pair now intend to make it everyone&rsquo;s problem.</p>
-        <p>Dinner and dancing will take place Friday, May 21st, 2027, at Urban Fieldhouse, 1203 Faith Drive.</p>
-        <p>Officials urge residents to attend. Footwear suited to dancing is advised.</p>
+        <p>The couple is now requesting your presence to celebrate their marriage.</p>
+        <p>Dinner and dancing will take place <b>Friday, May 21st, 2027</b>, at the <b>Urban Field House, 1203 Faith Drive</b> at <b>17:45</b>.</p>
+        <p>Travel, stay, and further information can be found in the pages of this edition.</p>
         </article>
 
         <section class="classifieds" aria-labelledby="classifieds-h">
@@ -77,7 +89,7 @@
         <h2 id="contents-h">Inside Today</h2>
         <ul>
           <li><a href="schedule.html"><strong>Schedule</strong><em>Page A2</em><span>How the evening unfolds</span></a></li>
-          <li><a href="venue.html"><strong>Venue</strong><em>Page A3</em><span>Urban Fieldhouse and how to get there</span></a></li>
+          <li><a href="venue.html"><strong>Venue</strong><em>Page A3</em><span>Urban Field House and how to get there</span></a></li>
           <li><a href="hotel.html"><strong>Hotel</strong><em>Page A4</em><span>Where to stay for the long weekend</span></a></li>
           <li><a href="rsvp.html"><strong>RSVP</strong><em>Page A5</em><span>Reply coupon enclosed</span></a></li>
           <li><a href="faq.html"><strong>FAQ</strong><em>Page A6</em><span>Letters from concerned residents</span></a></li>
@@ -85,12 +97,12 @@
       </aside>
     </div>
 
-    <a class="reply-box" href="rsvp.html"><b>Reply</b> at the RSVP desk, Page A5</a>
+    <a class="reply-box" href="rsvp.html"><b>RSVP</b> by the 1<sup>st</sup> of April at the RSVP desk, Page A5</a>
   </main>
 
   <nav class="jump" aria-label="Previous and next page"><a class="jump__next" href="schedule.html">Continued on Page A2: Schedule</a></nav>
 
-  <footer class="footer">Page A1 &middot; Friday, May 21st, 2027 &middot; Urban Fieldhouse, Lakeshore, Ontario</footer>
+  <footer class="footer">Page A1 &middot; Friday, May 21st, 2027 &middot; Urban Field House, Lakeshore, Ontario</footer>
 </div>
 
 <script src="assets/js/site.js"></script>

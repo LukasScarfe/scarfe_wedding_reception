@@ -13,7 +13,7 @@ rsvp.html                   the RSVP page
 assets/css/site.css         the Gazette theme, shared by every page
 assets/js/site.js           page-turn animation, keeps pages in A1–A6 order
 assets/js/rsvp.js           RSVP lookup/reply flow
-assets/halftone-wide.png    newspaper halftone of the couple, for the front page
+assets/halftone-front.png   newspaper halftone of the couple, for the front page (same as invite/)
 worker/                     Cloudflare Worker API backing the RSVP page
 worker/DEPLOY.md            one-time setup for the RSVP system
 tools/make-botanicals.js    regenerates the leaf artwork
@@ -41,7 +41,7 @@ and `MIDRIB` for the leaf silhouette.
 
 ## 1. Details
 
-All filled in. Married **Saturday June 6, 2026**; reception **Friday May 21, 2027** at Urban Fieldhouse, 1203 Faith Drive, Lakeshore ON.
+All filled in. Married **Saturday June 6, 2026**; reception **Friday May 21, 2027** at Urban Field House, 1203 Faith Drive, Lakeshore ON.
 
 The venue line links to Google Maps, styled to look like plain text.
 

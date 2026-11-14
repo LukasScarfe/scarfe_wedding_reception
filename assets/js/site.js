@@ -279,10 +279,50 @@
     turnTo(name, false).then(function () { history.replaceState(null, '', name); });
   });
 
+  /* On opening, riffle from the back page to the front so guests can see
+     there are more pages. index.html asks for this by putting the class
+     `intro` on <html> (once per tab), which keeps the front page hidden
+     until the riffle covers it. The live page never changes. */
+  var INTRO_PAUSE_MS = 250;    // a beat on the back page before it starts
+
+  function intro() {
+    var root = document.documentElement;
+    if (!root.classList.contains('intro')) return;
+    function reveal() { root.classList.remove('intro'); }
+
+    var behind = ORDER.slice(1).reverse();   // A6 first, down to A2
+    turning = true;
+    Promise.all(behind.map(load)).then(function (docs) {
+      var sheets = docs.map(function (doc) { return doc.querySelector('.sheet'); });
+      sheets.push(document.querySelector('.sheet'));
+      var turns = timing(sheets.length - 1);
+
+      // Show the back page with every earlier page turned over, off screen.
+      var stage = buildStage(sheets[1], 0, sheets[0], 0);
+      render(stage, 1);
+      reveal();
+
+      var chain = new Promise(function (done) { setTimeout(done, INTRO_PAUSE_MS); });
+      sheets.slice(1).forEach(function (leaf, i) {
+        chain = chain.then(function () {
+          if (i > 0) stage = buildStage(leaf, 0, sheets[i], 0);
+          return animate(stage, turns[i].ms, 1, 0, turns[i].ease);
+        }).then(function () { stage.el.remove(); });
+      });
+      return chain;
+    }).catch(function () {
+      document.querySelectorAll('.turn-stage').forEach(function (el) { el.remove(); });
+    }).then(function () {
+      reveal();
+      turning = false;
+    });
+  }
+  intro();
+
   /* Have every page and the lead photograph ready before the first turn. */
   function prepare() {
     ORDER.forEach(load);
-    new Image().src = 'assets/halftone-wide.png';
+    new Image().src = 'assets/halftone-front.png';
   }
   if (window.requestIdleCallback) window.requestIdleCallback(prepare);
   else window.setTimeout(prepare, 300);
