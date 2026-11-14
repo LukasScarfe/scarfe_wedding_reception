@@ -10,9 +10,10 @@
 
    Every page loads this, ahead of site.js, so the puzzle can be drawn
    into a page that hasn't been shown yet: when site.js fetches the
-   puzzle page for a page turn or the opening riffle, the starting
-   position is painted into that copy, so the board is there while the
-   page turns. Once the page is on screen, a live puzzle takes over.
+   puzzle page for a page turn or the opening riffle, the reader's
+   progress is painted into that copy, so the board is there, as they
+   left it, while the page turns. Once the page is on screen, a live
+   puzzle takes over from the same progress.
    ══════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
@@ -71,6 +72,25 @@
   var M = today.getMonth() + 1, D = today.getDate();
   var DATES = [M - 1, 11 + D];   // the two cells left open
 
+  /* The reader's progress, shared by every copy of the page so it
+     survives page turns, and kept for the rest of the day in this tab
+     (sessionStorage) so it survives full page loads too. */
+  var STORE = 'gazette-puzzle', DAY = M + '-' + D;
+  function copyPieces(pieces) {
+    return pieces.map(function (q) {
+      return { cells: q.cells.map(function (rc) { return rc.slice(); }), at: q.at ? q.at.slice() : null };
+    });
+  }
+  var progress = null;
+  try {
+    var kept = JSON.parse(sessionStorage.getItem(STORE));
+    if (kept && kept.day === DAY && kept.pieces && kept.pieces.length === HEART.pieces.length) progress = kept.pieces;
+  } catch (e) {}
+  function remember(pieces) {
+    progress = copyPieces(pieces);
+    try { sessionStorage.setItem(STORE, JSON.stringify({ day: DAY, pieces: progress })); } catch (e) {}
+  }
+
   var SVGNS = 'http://www.w3.org/2000/svg';
 
   var ink, paper, paperLow, inkSoft;
@@ -120,7 +140,8 @@
 
   // Each piece keeps its orientation (cells from 0,0) and its board spot, or null in the tray.
   var P = {
-    pieces: HEART.pieces.map(function (p) { return { cells: p.shape.map(function (q) { return q.slice(); }), at: null }; }),
+    pieces: progress ? copyPieces(progress)
+                     : HEART.pieces.map(function (p) { return { cells: p.shape.map(function (q) { return q.slice(); }), at: null }; }),
     sel: null, drag: null, cs: 56, tcs: 28, pad: 0, won: false
   };
   function solved() { return P.pieces.every(function (q) { return q.at; }); }
@@ -178,6 +199,7 @@
     P.cs = Math.max(24, Math.min(56, Math.floor((col - 8) / HEART.width)));
     P.tcs = Math.max(12, Math.min(28, Math.floor((col - 40) / 18)));
     drawBoard(); drawTray(); status();
+    if (live) remember(P.pieces);
   }
 
   function drawBoard() {
@@ -397,7 +419,7 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (isLive()) current.render(); });
   }
 
-  // Paint the starting position into a fetched copy of a page, if it's the puzzle page.
+  // Paint the reader's progress into a fetched copy of a page, if it's the puzzle page.
   function paint(doc) {
     if (doc === document || !doc.getElementById('puzzle')) return;
     readInks();
@@ -405,7 +427,7 @@
   }
 
   window.GazettePuzzle = { start: start, paint: paint };
-  document.addEventListener('gazette:pageloaded', function (e) { paint(e.detail); });
+  document.addEventListener('gazette:beforeshow', function (e) { paint(e.detail); });
   document.addEventListener('gazette:pageshown', start);
   document.addEventListener('keydown', function (e) { if (isLive()) current.onKey(e); });
   window.addEventListener('resize', function () { if (isLive()) current.onResize(); });

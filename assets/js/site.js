@@ -47,16 +47,23 @@
     return ORDER.indexOf(name) === -1 ? null : name;
   }
 
+  /* Let page scripts bring a fetched copy up to date just before it's
+     seen (puzzle.js draws the board as the reader left it). Copies are
+     cached, so this runs every time one is used, not once. */
+  function freshen(docs) {
+    docs.forEach(function (doc) {
+      document.dispatchEvent(new CustomEvent('gazette:beforeshow', { detail: doc }));
+    });
+    return docs;
+  }
+
   function load(name) {
     if (!cache[name]) {
       cache[name] = fetch(name, { cache: 'no-cache' }).then(function (res) {
         if (!res.ok) throw new Error('Could not load ' + name);
         return res.text();
       }).then(function (html) {
-        var doc = new DOMParser().parseFromString(html, 'text/html');
-        // Let page scripts draw into the copy before it's ever seen (puzzle.js).
-        document.dispatchEvent(new CustomEvent('gazette:pageloaded', { detail: doc }));
-        return doc;
+        return new DOMParser().parseFromString(html, 'text/html');
       });
       cache[name].catch(function () { delete cache[name]; });
     }
@@ -248,7 +255,7 @@
     for (var i = 1; i <= count; i++) route.push(ORDER[here + step * i]);
 
     turning = true;
-    return Promise.all(route.map(load)).then(function (docs) {
+    return Promise.all(route.map(load)).then(freshen).then(function (docs) {
       if (push) history.pushState(null, '', name);
       return docs.reduce(function (previous, doc, i) {
         return previous.then(function () {
@@ -309,7 +316,7 @@
 
     var behind = ORDER.slice(1).reverse();   // the back page first, down to A2
     turning = true;
-    Promise.all(behind.map(load)).then(function (docs) {
+    Promise.all(behind.map(load)).then(freshen).then(function (docs) {
       var sheets = docs.map(function (doc) { return doc.querySelector('.sheet'); });
       sheets.push(document.querySelector('.sheet'));
       var turns = timing(sheets.length - 1);
