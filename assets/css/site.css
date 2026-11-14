@@ -168,6 +168,8 @@ h2 {
 
 .news p { text-align: justify; hyphens: auto; }
 .news p + p { text-indent: 1em; }
+/* Short copy with long names that justify would stretch. */
+.news--ragged p { text-align: left; }
 
 .drop::first-letter {
   float: left; margin: 5px 7px 0 0;
@@ -183,7 +185,7 @@ main > h1:first-child { margin-top: 16px; }
 
 .lead-photo { margin: 0; }
 .lead-photo img {
-  width: 100%; height: auto; aspect-ratio: 2664 / 1470;
+  width: 100%; height: auto;
   border: 1px solid var(--ink);
   object-fit: cover; object-position: 56% 40%;
 }
@@ -237,7 +239,7 @@ main > h1:first-child { margin-top: 16px; }
   letter-spacing: .06em; text-transform: uppercase;
 }
 .reply-box:hover { background: var(--ink); color: var(--paper); }
-.reply-box sup { font-size: .62em; line-height: 0; vertical-align: baseline; position: relative; top: -.55em; }
+sup { font-size: .62em; line-height: 0; vertical-align: baseline; position: relative; top: -.55em; }
 
 @media (max-width: 860px) {
   .front { grid-template-columns: 1fr; gap: 18px; }
@@ -296,8 +298,10 @@ main > h1:first-child { margin-top: 16px; }
 }
 
 /* venue */
+.byline + .lead-photo { margin-bottom: 4px; }
+
 .briefs {
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
   margin-top: 18px; border-top: 4px solid var(--ink);
 }
 .briefs section { padding: 12px 18px 0; }
@@ -306,7 +310,7 @@ main > h1:first-child { margin-top: 16px; }
 .briefs section + section { border-left: 1px solid var(--ink); }
 .briefs h2 { font-size: 25px; }
 @media (max-width: 680px) {
-  .briefs { grid-template-columns: 1fr; }
+  .briefs { grid-auto-flow: row; }
   .briefs section { padding: 12px 0; }
   .briefs section + section { border-left: 0; border-top: 1px solid var(--ink); }
 }

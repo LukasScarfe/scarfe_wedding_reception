@@ -14,7 +14,7 @@
 (function () {
   'use strict';
 
-  var ORDER = ['index.html', 'schedule.html', 'venue.html', 'hotel.html', 'rsvp.html', 'faq.html'];
+  var ORDER = ['index.html', 'rsvp.html', 'schedule.html', 'venue.html', 'hotel.html', 'faq.html'];
   var STRIPS = 8;           // more strips bend more smoothly, but cost more
   var TURN_MS = 950;        // a single page
   var OVERLAP = 4;

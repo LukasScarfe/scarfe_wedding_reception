@@ -4,19 +4,21 @@ A garden/botanical e-vite email. Sage, blush and cream, script headline, mounted
 
 ```
 save-the-date.html          the email
-index.html                  the website's front page
-schedule.html               the order of events
-venue.html                  the venue and getting there
-hotel.html                  where to stay
-faq.html                    guest questions
-rsvp.html                   the RSVP page
+index.html                  A1, the website's front page
+rsvp.html                   A2, the RSVP page
+schedule.html               A3, the order of events
+venue.html                  A4, the venue and getting there
+hotel.html                  A5, where to stay
+faq.html                    A6, guest questions
 assets/css/site.css         the Gazette theme, shared by every page
 assets/js/site.js           page-turn animation, keeps pages in A1–A6 order
 assets/js/rsvp.js           RSVP lookup/reply flow
 assets/halftone-front.png   newspaper halftone of the couple, for the front page (same as invite/)
+assets/halftone-venue.png   newspaper halftone of the hall, for the venue page
 worker/                     Cloudflare Worker API backing the RSVP page
 worker/DEPLOY.md            one-time setup for the RSVP system
 tools/make-botanicals.js    regenerates the leaf artwork
+tools/make_venue_halftone.py  regenerates halftone-venue.png from tools/sources/
 
 assets/photo-email.jpg      880×1323, 135 KB — retina, displays at 420px
 assets/photo-large.jpg      1600×2405, 403 KB — for the website later
