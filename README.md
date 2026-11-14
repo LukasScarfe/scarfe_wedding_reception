@@ -21,6 +21,7 @@ worker/                     Cloudflare Worker API backing the RSVP page
 worker/DEPLOY.md            one-time setup for the RSVP system
 tools/make-botanicals.js    regenerates the leaf artwork
 tools/stamp_assets.py       stamps CSS/JS links with ?v= hashes (run after editing them)
+tools/make_favicon.py       draws favicon.svg, favicon.ico and assets/icons/ from the Heart board
 tools/make_venue_halftone.py  regenerates halftone-venue.png from tools/sources/ (photo: Leah Marie Wedding Photography)
 
 assets/photo-email.jpg      880×1323, 135 KB — retina, displays at 420px
