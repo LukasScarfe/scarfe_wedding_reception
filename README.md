@@ -116,7 +116,7 @@ before sending to anyone.
 
 ## 2b. The website
 
-The site is *The Scarfe–Yap Gazette*, a newspaper themed to match the invitation
+The site is *The Yap–Scarfe Gazette*, a newspaper themed to match the invitation
 in `invite_tests/04-zoom1-wide.html`. Each page is a plain HTML file with the
 same masthead and navigation, so a new or renamed page has to be changed in the
 navigation of all six. The order of that menu is the reading order: page turns,
